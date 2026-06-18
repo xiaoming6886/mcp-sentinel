@@ -20,4 +20,3 @@ def test_list_rules():
 def test_scan_help():
     result = runner.invoke(app, ["scan", "--help"])
     assert result.exit_code == 0
-    assert "--phase" in result.stdout

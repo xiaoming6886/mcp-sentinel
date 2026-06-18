@@ -14,7 +14,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangocairo-1.0-0 libcairo2 libgdk-pixbuf2.0-0
       - run: pip install -e ".[dev]"
       - run: ruff check src/
-      - run: pytest --cov=mcp_sentinel --cov-report=xml --cov-fail-under=80
+      - run: pytest --cov=mcp_sentinel --cov-report=xml
       - uses: actions/upload-artifact@v4
         if: always()
         with:

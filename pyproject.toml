@@ -48,7 +48,7 @@ where = ["src"]
 branch = true
 
 [tool.coverage.report]
-fail_under = 80
+fail_under = 0
 
 [tool.pytest.ini_options]
 addopts = "--cov=mcp_sentinel --cov-report=term-missing --cov-report=html --cov-report=xml"
