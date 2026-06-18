@@ -4,27 +4,95 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![arXiv](https://img.shields.io/badge/arXiv-2503.23278-b31b1b.svg)](https://arxiv.org/abs/2503.23278)
 
-> **MCP 生态的安全扫描工具** — 类似 sqlmap/nmap，轻量、开源、开发者标配。
+[English](#english) | [中文](#中文)
 
-MCP Sentinel 覆盖 MCP Server 生命周期的 **4 个阶段**（创建→部署→运行→维护），检测 **17 种威胁类型**，基于华中科技大学 Security PRIDE 团队的首篇 MCP 安全论文（arXiv:2503.23278）。
+> **MCP ecosystem security scanner** — lightweight, open-source, developer-first. Think sqlmap/nmap for MCP.
+
+MCP Sentinel covers **4 lifecycle phases** (Creation → Deployment → Runtime → Maintenance) and detects **17 threat types**, based on the first MCP security paper by HUST Security PRIDE (arXiv:2503.23278).
 
 ---
 
-## 快速开始
+<a name="english"></a>
+## Quick Start
 
 ```bash
-# 安装
 pip install mcp-sentinel
-
-# 或 Docker（推荐）
+# or Docker
 docker compose up
 
-# 扫描
+# Scan
 mcp-sentinel scan ./my-mcp-server -o console
 mcp-scan ./my-mcp-server -o json -f report.json
 ```
 
+## Detection — 17 Rules
+
+| # | Rule ID | Threat | Phase | Severity |
+|---|---------|-------|-------|----------|
+| 1 | MCS-C001 | Namespace Typosquatting | Creation | HIGH |
+| 2 | MCS-C002 | Tool Name Conflict | Creation | MEDIUM |
+| 3 | MCS-C003 | Preference Manipulation | Creation | HIGH |
+| 4 | MCS-C004 | Tool Poisoning | Creation | CRITICAL |
+| 5 | MCS-C005 | Command Injection / Backdoor | Creation | CRITICAL |
+| 6 | MCS-C006 | Installer Integrity | Creation | HIGH |
+| 7 | MCS-D001 | Credential Exposure | Deployment | CRITICAL |
+| 8 | MCS-D002 | Sandbox Misconfiguration | Deployment | HIGH |
+| 9 | MCS-D003 | Untrusted Source | Deployment | MEDIUM |
+| 10 | MCS-R001 | Indirect Prompt Injection | Runtime | CRITICAL |
+| 11 | MCS-R002 | Cross-Server Shadowing | Runtime | HIGH |
+| 12 | MCS-R003 | Tool Chain Abuse | Runtime | HIGH |
+| 13 | MCS-R004 | Unauthorized Access | Runtime | HIGH |
+| 14 | MCS-R005 | Sandbox Escape Risk | Runtime | CRITICAL |
+| 15 | MCS-M001 | Vulnerable Version Rollback | Maintenance | MEDIUM |
+| 16 | MCS-M002 | Privilege Persistence | Maintenance | MEDIUM |
+| 17 | MCS-M003 | Configuration Drift | Maintenance | LOW |
+
+## CLI
+
+```bash
+mcp-sentinel scan <TARGET>       # Scan an MCP server
+  --phase <phase>                # Filter by lifecycle phase
+  --severity <level>             # Minimum severity
+  -o <console|json|html|pdf|sarif>
+  -f <output_file>
+  --fail-on <level>              # Exit 1 if findings >= level
+
+mcp-sentinel baseline <TARGET>   # Create baseline snapshot
+mcp-sentinel diff <BASE> <TGT>   # Compare against baseline
+mcp-sentinel list-rules          # List all rules
+mcp-sentinel version
+```
+
+Alias: `mcp-scan` = `mcp-sentinel`
+
+## Output Formats
+
+| Format | Use |
+|--------|-----|
+| Console | Rich-colored terminal output |
+| JSON | Machine-readable, CI/CD |
+| HTML | Browser view with CSS |
+| PDF | Formal report |
+| SARIF 2.1.0 | GitHub Code Scanning |
+
+## References
+
+- HUST Security PRIDE: [arXiv:2503.23278](https://arxiv.org/abs/2503.23278)
+- OWASP LLM Top 10 (2025) & Agentic Top 10
+- SARIF 2.1.0
+
 ---
+
+<a name="中文"></a>
+## 快速开始
+
+```bash
+pip install mcp-sentinel
+# 或 Docker
+docker compose up
+
+mcp-sentinel scan ./my-mcp-server -o console
+```
 
 ## 检测能力 — 17 条规则
 
@@ -48,8 +116,6 @@ mcp-scan ./my-mcp-server -o json -f report.json
 | 16 | MCS-M002 | 更新后权限持久化 | 维护 | MEDIUM |
 | 17 | MCS-M003 | 配置漂移 | 维护 | LOW |
 
----
-
 ## CLI 命令
 
 ```bash
@@ -63,51 +129,16 @@ mcp-sentinel scan <TARGET>       # 扫描 MCP Server
 mcp-sentinel baseline <TARGET>   # 创建基线快照
 mcp-sentinel diff <BASE> <TGT>   # 基线对比
 mcp-sentinel list-rules          # 列出所有规则
-mcp-sentinel version             # 版本信息
+mcp-sentinel version
 ```
 
 别名：`mcp-scan` = `mcp-sentinel`
 
----
-
-## 输出格式
-
-| 格式 | 用途 |
-|------|------|
-| Console | 终端彩色输出（Rich） |
-| JSON | 机器可读，CI/CD 集成 |
-| HTML | 浏览器查看，自带 CSS |
-| PDF | 正式报告 |
-| SARIF 2.1.0 | GitHub Code Scanning 上传 |
-
----
-
-## 项目结构
-
-```
-mcp-sentinel/
-├── src/mcp_sentinel/
-│   ├── cli.py              # CLI 入口
-│   ├── core/               # 引擎、注册表、类型
-│   ├── rules/              # 17 条检测规则
-│   ├── analyzers/          # AST/配置/清单分析器
-│   ├── connectors/         # STDIO/SSE/源码连接器
-│   ├── reporters/          # 5 种输出格式
-│   └── utils/              # AST/相似度/熵/hash/OWASP
-├── tests/                  # 测试 + PoC 漏洞服务器
-├── data/                   # 已知 MCP 服务器白名单
-├── Dockerfile
-└── docker-compose.yml
-```
-
----
-
 ## 参考
 
-- HUST Security PRIDE: [arXiv:2503.23278](https://arxiv.org/abs/2503.23278)
-- OWASP LLM Top 10 (2025)
-- OWASP Agentic Top 10
-- SARIF 2.1.0 Specification
+- 华中科技大学 Security PRIDE: [arXiv:2503.23278](https://arxiv.org/abs/2503.23278)
+- OWASP LLM Top 10 (2025) / Agentic Top 10
+- SARIF 2.1.0
 
 ---
 
