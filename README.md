@@ -97,6 +97,13 @@ Files: 109 | Rules: 7 | Findings: 16 | Duration: 2.0s
 
 ## References
 
+## Known Limitations
+
+- **R003 Tool Chain Abuse**: detects tool chains within individual files via AST analysis. Cross-file chains across multiple Python modules are not yet detected.
+- **M003 Configuration Drift**: full drift detection requires a baseline snapshot (use `mcp-sentinel baseline` + `mcp-sentinel diff`).
+
+## References
+
 - HUST Security PRIDE: [arXiv:2503.23278](https://arxiv.org/abs/2503.23278)
 - OWASP LLM Top 10 (2025) & Agentic Top 10
 - SARIF 2.1.0
