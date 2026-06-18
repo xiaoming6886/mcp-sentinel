@@ -65,6 +65,26 @@ mcp-sentinel version
 
 Alias: `mcp-scan` = `mcp-sentinel`
 
+## Real-World Results
+
+Scanned the official **MCP Python SDK** ([23K+ stars, 190M+ downloads](https://github.com/modelcontextprotocol/python-sdk)):
+
+```
+Files: 109 | Rules: 7 | Findings: 16 | Duration: 2.0s
+
+[CRITICAL] MCS-C005  Command Injection
+  cli/cli.py:48 — subprocess.run(..., shell=True)
+
+[CRITICAL] MCS-R005  Sandbox Escape Risk
+  cli/cli.py:278 — subprocess.run() without cwd/env restriction
+
+[CRITICAL] MCS-R001  Indirect Prompt Injection
+  server/fastmcp/types.py — to_image_content() returns raw data to LLM
+
+[HIGH] MCS-R004  Unauthorized Access
+  cli/claude.py — Path() without traversal check
+```
+
 ## Output Formats
 
 | Format | Use |
@@ -133,6 +153,26 @@ mcp-sentinel version
 ```
 
 别名：`mcp-scan` = `mcp-sentinel`
+
+## 真实扫描结果
+
+对官方 **MCP Python SDK**（[23K+ stars, 1.9 亿下载](https://github.com/modelcontextprotocol/python-sdk)）的扫描结果：
+
+```
+文件: 109 | 规则: 7 | 发现: 16 | 耗时: 2.0s
+
+[CRITICAL] MCS-C005  代码注入
+  cli/cli.py:48 — subprocess.run(..., shell=True)
+
+[CRITICAL] MCS-R005  沙箱逃逸风险
+  cli/cli.py:278 — subprocess.run() 无 cwd/env 限制
+
+[CRITICAL] MCS-R001  间接 Prompt 注入
+  server/fastmcp/types.py — to_image_content() 返回未净化数据
+
+[HIGH] MCS-R004  未授权访问
+  cli/claude.py — Path() 无路径穿越检查
+```
 
 ## 参考
 
