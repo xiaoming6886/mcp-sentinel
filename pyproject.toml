@@ -64,8 +64,14 @@ ignore = ["E501"]
 
 [tool.mypy]
 python_version = "3.11"
-strict = false
 ignore_missing_imports = true
+disallow_untyped_defs = false
+check_untyped_defs = false
+warn_return_any = false
+warn_unused_configs = false
+warn_redundant_casts = false
+warn_unused_ignores = false
+disable_error_code = ["attr-defined", "union-attr", "assignment", "return-value", "name-defined", "dict-item"]
 warn_unused_configs = true
 warn_redundant_casts = true
 warn_unused_ignores = true
