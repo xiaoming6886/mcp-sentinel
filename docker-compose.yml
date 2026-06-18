@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  sentinel:
+    build: .
+    volumes:
+      - .:/workspace:ro
+    command: scan /workspace -o console --fail-on high
