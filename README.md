@@ -99,7 +99,6 @@ Files: 109 | Rules: 7 | Findings: 16 | Duration: 2.0s
 
 ## Known Limitations
 
-- **R003 Tool Chain Abuse**: detects tool chains within individual files via AST analysis. Cross-file chains across multiple Python modules are not yet detected.
 - **M003 Configuration Drift**: full drift detection requires a baseline snapshot (use `mcp-sentinel baseline` + `mcp-sentinel diff`).
 
 ## References
